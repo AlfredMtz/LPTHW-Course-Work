@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<!-- If 'greeting' is pass as parameter under the render_template function
+    then do the following -->
+{% if greeting %}
+    I just wanted to say
+    <em style="color: green; font-size: 2em;">{{ greeting }}</em>.
+<!-- Else if 'greeting' is not pass as a parameter under the render_template
+    function then just printthe next phrase -->
+{% else %}
+    <em>Hello</em>, world!
+<!-- Empty condition -->
+{% endif %}
+
+{% endblock %}
+

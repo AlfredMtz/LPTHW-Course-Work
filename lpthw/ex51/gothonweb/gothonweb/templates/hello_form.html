@@ -1,0 +1,30 @@
+<!-- The reason for this form is so the user doesn't have to give information directly into
+    the URL and make it easy for people to pass data and send it to your web application. -->
+
+{% extends "layout.html" %}
+
+{% block content %}
+
+<h3 style="text-align: left;">Fill Out This Form:</h3>
+
+<!-- Use a POST method request so the browser hides the form 
+    fields(data) and send that to the /hello URL without the
+    user seeing these in the URL link. 
+    'enctype' sa-->
+<form action="/hello" method="POST" enctype="multipart/form-data">
+        <label for="file">Choose a file:</label>
+        <input type="file" name="file1"/>
+        <input type="submit" value="Send!">
+
+    <!-- Save what the user inputs to the variable 'greet' -->
+    <p> Greeting: <input type="text" name="greet"></p> 
+    <!-- Save what the user inputs tothe variable 'name' -->
+    <p> Your Name: <input type="text" name="name"></p>
+    <!-- Defines a button for submitting the form data inputted by
+        the user into a form-handler(typically a server page with a
+        script for processing input data. For this case is /hello as
+        shown in action="/hello") -->
+    <input type="submit">
+</form>
+
+{% endblock %}

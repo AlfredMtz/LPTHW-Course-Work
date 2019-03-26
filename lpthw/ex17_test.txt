@@ -1,0 +1,2 @@
+This text should appear in both,
+the text and the copy file

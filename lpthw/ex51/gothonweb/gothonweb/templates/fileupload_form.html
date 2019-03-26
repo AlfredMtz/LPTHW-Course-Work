@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<h1>This is an image uploader form</h1>
+
+<form id:"upload-form" action="{{ url_for('upload') }}" method="POST" enctype="multipart/form-data">
+    <input type="file" name="file" accept="image/*" multiple>
+    <input type="submit" value="send">
+
+</form>
+
+
+{% endblock %}
