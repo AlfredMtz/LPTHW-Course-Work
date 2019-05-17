@@ -1,17 +1,18 @@
 #from nose.tools import *
 import pytest 
 # import the whole application from the app module
-from gothonweb import app
+from gothonweb.app import app
 
 # Set the file to test mode
 app.config['TESTING'] = True
-# Imidates the web app as shown to the user.
+# Imitates the web app as shown to the user.
 web = app.test_client()
 
 
 def test_index():
     rv = web.get('/', follow_redirects=True)
     assert rv.status_code == 200
+
 
     
     # rv = web.get('/hello', follow_redirects=True)
