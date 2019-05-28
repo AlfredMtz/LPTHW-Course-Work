@@ -86,7 +86,7 @@ def game():
                 # Exceed tries and to the death room
                 next_room = room.go('*')
                 session['room_name'] = planisphere.name_room(next_room)
-                pdb.set_trace()
+                #pdb.set_trace()
 
         elif room_name == 'the_bridge':
             # The Bridge class
