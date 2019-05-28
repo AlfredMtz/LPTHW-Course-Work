@@ -1,6 +1,7 @@
 import random
 from sys import exit
 from random import randint
+
 class Room(object):
 
     def __init__(self, name, description):
@@ -93,6 +94,11 @@ and surprise 5 Gothons who are trying to take control of the ship.  Each
 of them has an even uglier clown costume than the last.  They haven't
 pulled their weapons out yet, as they see the active bomb under your arm
 and don't want to set it off.
+
+What would you like to do?
+
+1. throw the bomb
+2. slowly place the bomb
 """)
 
 Escape_Pod = Room("Escape Pod",
@@ -110,6 +116,8 @@ are on the ship, so your run is clear of interference.  You get to the
 chamber with the escape pods, and now need to pick one to take.  Some of
 them could be damaged but you don't have time to look.  There's 5 pods,
 which one do you take?
+
+Input the number of your chosen pod (1-5):
 """)
 
 Bridge_Death = Room('Bridge Death',
@@ -153,15 +161,15 @@ quips = [
 Generic_Death = Room("death", quips[randint(0, len(quips)-1)])
 
 
-
 Central_Corridor.add_paths({
     'shoot!': Shoot_Death,
     'dodge!': Dodge_Death,
     'tell a joke': Laser_Weapon_Armory
 })
+
 Laser_Weapon_Armory.add_paths({
   '123': The_Bridge,
-  '*': Generic_Death  
+  '*': Exceedtries_Death
 })
 
 The_Bridge.add_paths({
@@ -171,12 +179,11 @@ The_Bridge.add_paths({
 
 Escape_Pod.add_paths({
     '2': The_End_Winner,
-    '*': The_End_Loser
+    'end': The_End_Loser
 })
 
 START = 'central_corridor'
 GENERIC_DEATH = 'death'
-BOMB_DEATH = 'bomb_death'
 
 # I built this diccionary out of the consequences of not having
 # global variables for load_room() and name_room()
@@ -184,12 +191,12 @@ scences = {'central_corridor': Central_Corridor,
             'shoot!': Shoot_Death,
             'dodge!': Dodge_Death,
             'laser_weapon_armory': Laser_Weapon_Armory,
-            'bomb_death': Exceedtries_Death,
+            '*': Exceedtries_Death,
             'the_bridge': The_Bridge,
             'bridge_death': Bridge_Death,
             'escape_pod': Escape_Pod,
             'the_end_winner': The_End_Winner,
-            'pod_death': The_End_Loser,
+            'end': The_End_Loser,
             'death': Generic_Death
             }
 
@@ -202,6 +209,7 @@ def name_room(room):
     for key, value in scences.items():
         if value == room:
             return key
+
 
 #room = load_room(START)
 #print(Generic_Death.description)

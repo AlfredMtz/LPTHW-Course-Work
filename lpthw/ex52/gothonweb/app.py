@@ -2,7 +2,7 @@ import os
 from flask import Flask, session, redirect, url_for, escape, request
 from flask import render_template
 import planisphere
-import pdb
+#import pdb
 
 app = Flask(__name__)
 
@@ -21,7 +21,6 @@ def game():
     count = session.get('count')
 
     g_death = planisphere.GENERIC_DEATH
-    bomb_death = planisphere.BOMB_DEATH
     
 
     # GET method is to ask the user for data
@@ -32,17 +31,15 @@ def game():
             room = planisphere.load_room(room_name)
             # laser_weapon_armory counter variable
             n_count = count
-            #pdb.set_trace()
+
             return render_template("show_room.html", room=room, count=n_count)
 
 
-        elif room_name in ['shoot!', 'dodge!', 'bomb_death', 'bridge_death','pod_death']:
+        elif room_name in ['shoot!', 'dodge!', '*', 'bridge_death', 'end']:
             room = planisphere.load_room(room_name)
             # General death room
             g_deathroom = planisphere.load_room(g_death)
             return render_template("show_room.html", room=room, g_deathroom=g_deathroom)
-
-
         else:
             # Do I even need this???
             return render_template("you_died.html")
@@ -73,8 +70,8 @@ def game():
             # Laser_Weapon_Aromory class
             room = planisphere.load_room(room_name)
             next_room = room.go(action)
-        
-            while count < 3:
+            
+            while count < 1:
 
                 if action == '123':
                     # next room 'the_bridge'
@@ -87,9 +84,9 @@ def game():
                     break
             else:
                 # Exceed tries and to the death room
-                room = planisphere.load_room(bomb_death)
-                session['room_name'] = planisphere.name_room(room)
-
+                next_room = room.go('*')
+                session['room_name'] = planisphere.name_room(next_room)
+                pdb.set_trace()
 
         elif room_name == 'the_bridge':
             # The Bridge class
@@ -111,15 +108,12 @@ def game():
             # Scape Pod class
             room = planisphere.load_room(room_name)
             next_room = room.go(action)
-            #pdb.set_trace()
+            
             if action == '2':
                 session['room_name'] = planisphere.name_room(next_room)
-                #pdb.set_trace()
-            # This is not working! Why?????
             elif action in ['1','3','4','5']:
-                next_room = room.go('*')
+                next_room = room.go('end')
                 session['room_name'] = planisphere.name_room(next_room)
-                #pdb.set_trace()
             else:
                 session['room_name'] = planisphere.name_room(room)
                 
@@ -127,7 +121,7 @@ def game():
         return redirect(url_for("game"))
 
 
-# YOU SHOULD CHANGE THIS IF YOU PUT ON THE INTERNET
+# key
 app.secret_key = os.environ.get('MY_LPTHW_SECRETKEY')
 
 if __name__ == "__main__":
