@@ -2,33 +2,32 @@
 
 {% block content %}
 
-<h1> {{ room.name }}  </h1>
+<h1> {{ room.name }} </h1>
 
 <pre>
 {{ room.description }}
 </pre>
 
 {% if room.name in ["death", "The End Loser", "Bomb Death", "Bridge Death"] %}
-    {{g_deathroom.description}}
-    <p><a href="/">Do You Want to Play Again?</a></p>
+{{g_death.description}}
+<p><a href="/">Do You Want to Play Again?</a></p>
 
 {% elif room.name == "Laser Weapon Armory" %}
-    <p>Number of tries: {{count}}</p>
-    <p>
+<p>Number of tries: {{n_count}}</p>
+<p>
     <form action="/game" method="POST">
         - <input type="text" name="action"> <input type="SUBMIT">
     </form>
-    </p>
+</p>
 {% elif room.name == "The End Winner" %}
-    <h3>YOU WON!</h3>
-    <h3>GREAT JOB!</h3>
-    <p><a href="/">Click here to play again!</a></p>
+<h3>YOU WON!</h3>
+<h3>GREAT JOB!</h3>
+<p><a href="/">Click here to play again!</a></p>
 
 {% else %}
-    <p>
+<p>
     <!--form action="/game" | action atrribute specefies where to send the form-data when
         a form is submitted.
-
         method="POST" | POST is used to send data to a server to create/update a resource-->
     <form action="/game" method="POST">
         <!--<input | specifies an input field where the user can enter data
@@ -41,7 +40,7 @@
             variable name "action" -->
         - <input type="text" name="action"> <input type="SUBMIT">
     </form>
-    </p>
+</p>
 {% endif %}
 </div>
 

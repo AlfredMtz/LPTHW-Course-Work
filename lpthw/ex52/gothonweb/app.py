@@ -2,7 +2,7 @@ import os
 from flask import Flask, session, redirect, url_for, escape, request
 from flask import render_template
 import planisphere
-#import pdb
+import pdb
 
 app = Flask(__name__)
 
@@ -26,20 +26,14 @@ def game():
     # GET method is to ask the user for data
     if request.method == "GET":
 
-        if room_name in ['central_corridor','laser_weapon_armory', 'the_bridge','escape_pod', 'the_end_winner']:
+        if room_name:
             # key value, which are classes
             room = planisphere.load_room(room_name)
             # laser_weapon_armory counter variable
-            n_count = count
-
-            return render_template("show_room.html", room=room, count=n_count)
-
-
-        elif room_name in ['shoot!', 'dodge!', '*', 'bridge_death', 'end']:
-            room = planisphere.load_room(room_name)
-            # General death room
-            g_deathroom = planisphere.load_room(g_death)
-            return render_template("show_room.html", room=room, g_deathroom=g_deathroom)
+            n_count = session['count']
+            g_death = planisphere.load_room(g_death)
+            #pdb.set_trace()
+            return render_template("show_room.html", room=room, n_count=n_count, g_death=g_death)
         else:
             # Do I even need this???
             return render_template("you_died.html")
@@ -49,74 +43,36 @@ def game():
         # key and value pairs of form parameters and their values. Ex: 'action' is the Key/
         action = request.form.get('action')
 
-        if room_name == 'central_corridor':
+        if room_name and action:
             #Central_Corridor class
             room = planisphere.load_room(room_name)
             # Go to the next room 'laser_weapon_armory' or 'death'
             next_room = room.go(action)
 
-            if action == 'tell a joke':
-                # Go to the next room 'laser_weapon_armory'
-                session['room_name'] = planisphere.name_room(next_room)
-            elif action in ['dodge!', 'shoot!']:
-                # Go to the next room 'death'
-                session['room_name'] = planisphere.name_room(next_room)
-            else:
-                # Go back to the same room
-                session['room_name'] = planisphere.name_room(room)
-
-
-        elif room_name == 'laser_weapon_armory':
-            # Laser_Weapon_Aromory class
-            room = planisphere.load_room(room_name)
-            next_room = room.go(action)
-            
-            while count < 1:
-
-                if action == '123':
-                    # next room 'the_bridge'
-                    session['room_name'] = planisphere.name_room(next_room)
+            while room_name == 'laser_weapon_armory' and action != '123':
+                if count < 3:
+                    session['count'] += 1
                     break
                 else:
-                    # Count each tried and go back to the same room
-                    session['count'] += 1
-                    session['room_name'] = planisphere.name_room(room)
                     break
+
+            #.set_trace()
+            if not next_room:
+                if room_name == 'laser_weapon_armory' and count == 2:
+                    next_room = room.go('*')
+                    #pbd.set_trace()
+                    session['room_name'] = planisphere.name_room(next_room)
+                elif room_name == 'escape_pod' and action != '2':
+                    next_room = room.go('end')
+                    session['room_name'] = planisphere.name_room(next_room)
+                else:
+                    # Go back to the same room
+                    session['room_name'] = planisphere.name_room(room)
+                    #pdb.set_trace()
             else:
-                # Exceed tries and to the death room
-                next_room = room.go('*')
                 session['room_name'] = planisphere.name_room(next_room)
                 #pdb.set_trace()
 
-        elif room_name == 'the_bridge':
-            # The Bridge class
-            room = planisphere.load_room(room_name)
-            next_room = room.go(action)
-
-            if action == 'slowly place the bomb':
-                # Goes to next room
-                session['room_name'] = planisphere.name_room(next_room)
-            elif action == 'throw the bomb':
-                # Goes to death room
-                session['room_name'] = planisphere.name_room(next_room)
-            else:
-                # Back to same room
-                session['room_name'] = planisphere.name_room(room)
-
-
-        elif room_name == 'escape_pod':
-            # Scape Pod class
-            room = planisphere.load_room(room_name)
-            next_room = room.go(action)
-            
-            if action == '2':
-                session['room_name'] = planisphere.name_room(next_room)
-            elif action in ['1','3','4','5']:
-                next_room = room.go('end')
-                session['room_name'] = planisphere.name_room(next_room)
-            else:
-                session['room_name'] = planisphere.name_room(room)
-                
         # Back to /game url function
         return redirect(url_for("game"))
 
