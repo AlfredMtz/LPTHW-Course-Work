@@ -199,6 +199,7 @@ scences = {'central_corridor': Central_Corridor,
             'end': The_End_Loser,
             'death': Generic_Death
             }
+right_choices = ['tell a joke', '123', 'slowly place the bomb', '2']
 
 def load_room(name):
     val = scences.get(name)

@@ -1,4 +1,11 @@
-from models import User
+from flask import render_template, session, redirect, url_for, escape, request, flash
+from gothonweb import app, db, bcrypt
+from gothonweb.forms import RegistrationForm, LoginForm
+from gothonweb.models import User
+from gothonweb import planisphere
+from flask_login import login_user, current_user, logout_user, login_required
+import pdb
+
 
 
 @app.route("/")
@@ -6,23 +13,33 @@ def index():
     # this is used to "setup" the session with starting values
     session['room_name'] = planisphere.START
     session['count'] = 0
-    return redirect(url_for("game"))
 
+    # if logged user
+    if current_user.is_authenticated:
+        session['score'] = current_user.score
+    # if playing as a guess
+    else:
+        session['score'] = 0
+
+    return redirect(url_for("game"))
 
 @app.route("/game", methods=['GET', 'POST'])
 def game():
     # starting room
     room_name = session.get('room_name')
-    # secret code counts
+    # secret code counts for 'laser_weapon_armory" room
     count = session.get('count')
+    # score game system for users, starts at 0
+    score = session.get('score')
+    
 
     if request.method == "GET":
         if room_name:
             room = planisphere.load_room(room_name)
             # random death message
             g_death = planisphere.load_room(planisphere.GENERIC_DEATH)
-            return render_template("show_room.html", room=room, n_count=count,
-                                   g_death=g_death, title='Gothons From Planet Percal #25')
+            return render_template("show_room.html", room=room, n_count=count, score=score, 
+                                    g_death=g_death, title='Gothons From Planet Percal #25')
         else:
             # Do I even need this???
             return render_template("you_died.html")
@@ -31,6 +48,23 @@ def game():
         # request inputed data in client's side web page.
         action = request.form.get('action')
 
+        # if logged user
+        if action in planisphere.right_choices and current_user.is_authenticated:
+            current_user.score = score + 2
+            
+            # User's score get updated on database
+            db.session.commit()
+            session['score'] = current_user.score
+
+        # playing as a guess
+        elif action in planisphere.right_choices:
+            session['score'] += 2
+
+        # Skip and run upcoming lines of code
+        else:
+            pass
+
+        
         if room_name and action:
             room = planisphere.load_room(room_name)
             next_room = room.go(action)
@@ -73,20 +107,43 @@ def about():
 
 @app.route("/register", methods=['GET', 'POST'])
 def register():
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
     form = RegistrationForm()
     if form.validate_on_submit():
-        flash(f'Account created for {form.username.data}!', 'success')
-        return redirect(url_for('home'))
+        hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+        user = User(username=form.username.data, email=form.email.data, password=hashed_password)
+        db.session.add(user)
+        db.session.commit()
+        flash('Your account has been created! You are now able to log in', 'success')
+        return redirect(url_for('login'))
     return render_template("register.html", title='Register', form=form)
 
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
     form = LoginForm()
     if form.validate_on_submit():
-        if form.email.data == 'admin@blog.com' and form.password.data == 'password':
-            flash('You have logged in!', 'success')
-            return redirect(url_for('home'))
+        user = User.query.filter_by(email=form.email.data).first()
+        if user and bcrypt.check_password_hash(user.password, form.password.data):
+            login_user(user, remember=form.remember.data)
+            next_page = request.args.get('next')
+            return redirect(next_page) if next_page else redirect(url_for('home'))
         else:
-            flash('Login Unsuccessful. Please check username and password', 'danger')
+            flash('Login Unsuccessful. Please check email and password', 'danger')
     return render_template("login.html", title='Login', form=form)
+
+
+@app.route("/logout")
+def logout():
+    logout_user()
+    return redirect(url_for('home'))
+
+
+@app.route("/account")
+@login_required
+def account():
+    return render_template("account.html", title='Account')
+

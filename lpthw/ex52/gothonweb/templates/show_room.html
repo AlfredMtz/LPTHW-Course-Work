@@ -2,29 +2,66 @@
 
 {% block content %}
 
-<h1> {{ room.name }} </h1>
 
+<!-- Death rooms -->
+{% if room.name in ["death", "The End Loser", "Bomb Death", "Bridge Death"] %}
+<p> You earned no points :(</p>
+<p> Points you finished with: {{ score }}</p>
+<h1> {{ room.name }} </h1>
 <pre>
 {{ room.description }}
 </pre>
-
-{% if room.name in ["death", "The End Loser", "Bomb Death", "Bridge Death"] %}
 {{g_death.description}}
 <p><a href="/">Do You Want to Play Again?</a></p>
 
+<!-- Central Corridor room -->
+{% elif room.name == "Central Corridor" %}
+        <p>Your current accumulated score is: {{ score }}</p>
+<h1> {{ room.name }} </h1>
+<pre>
+{{ room.description }}
+</pre>
+<p>
+    <form action="/game" method="POST">
+        - <input type="text" name="action"> <input type="SUBMIT">
+    </form>
+</p>
+
+<!-- Central Corridor room -->
 {% elif room.name == "Laser Weapon Armory" %}
+<p>You earned +2 points!</p>
+<p>Your new score is: {{ score }}</p>
+<h1> {{ room.name }} </h1>
+<pre>
+{{ room.description }}
+</pre>
 <p>Number of tries: {{n_count}}</p>
 <p>
     <form action="/game" method="POST">
         - <input type="text" name="action"> <input type="SUBMIT">
     </form>
 </p>
+
+<!-- Won the game room -->
 {% elif room.name == "The End Winner" %}
 <h3>YOU WON!</h3>
-<h3>GREAT JOB!</h3>
+<p>You earned +2 points!</p>
+<p>Your final and new accumulated score is: {{ score }}</p>
+<h1> {{ room.name }} </h1>
+<pre>
+{{ room.description }}
+</pre>
+
 <p><a href="/">Click here to play again!</a></p>
 
+<!-- Anyother room -->
 {% else %}
+<p>You earned +2 points!</p>
+<p>Your new score is: {{ score }}</p>
+<h1> {{ room.name }} </h1>
+<pre>
+{{ room.description }}
+</pre>
 <p>
     <!--form action="/game" | action atrribute specefies where to send the form-data when
         a form is submitted.

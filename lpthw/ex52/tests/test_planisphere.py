@@ -6,7 +6,7 @@ pytest, so I can use its functionalities in this current file
 '''
 import pytest
 from gothonweb.planisphere import *
-
+# from gothonweb import planisphere
 
 def test_gothon_game_map():
     
