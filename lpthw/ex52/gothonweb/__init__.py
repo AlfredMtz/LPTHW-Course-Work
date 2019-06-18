@@ -8,6 +8,11 @@ from flask_login import LoginManager
 # import flask_login
 
 app = Flask(__name__)
+
+# Disables track modification warning 
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+
 app.secret_key = os.environ.get('MY_LPTHW_SECRETKEY')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
 db = SQLAlchemy(app)

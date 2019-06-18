@@ -36,6 +36,7 @@ def game():
     if request.method == "GET":
         if room_name:
             room = planisphere.load_room(room_name)
+            #pdb.set_trace()
             # random death message
             g_death = planisphere.load_room(planisphere.GENERIC_DEATH)
             return render_template("show_room.html", room=room, n_count=count, score=score, 
@@ -68,7 +69,7 @@ def game():
         if room_name and action:
             room = planisphere.load_room(room_name)
             next_room = room.go(action)
-
+            # pdb.set_trace()
             while room_name == 'laser_weapon_armory' and action != '123':
                 if count < 3:
                     session['count'] += 1
@@ -90,7 +91,7 @@ def game():
                     session['room_name'] = planisphere.name_room(room)
             else:
                 session['room_name'] = planisphere.name_room(next_room)
-
+            #pdb.set_trace()
         # Back to /game url function
         return redirect(url_for("game"))
 
@@ -147,3 +148,9 @@ def logout():
 def account():
     return render_template("account.html", title='Account')
 
+
+@app.route("/help")
+def help():
+    room_name = session.get('room_name')
+    room = planisphere.load_room(room_name)
+    return render_template("help.html", room=room)

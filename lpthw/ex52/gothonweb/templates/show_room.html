@@ -15,8 +15,15 @@
 <p><a href="/">Do You Want to Play Again?</a></p>
 
 <!-- Central Corridor room -->
-{% elif room.name == "Central Corridor" %}
-        <p>Your current accumulated score is: {{ score }}</p>
+{% elif room.name in ["Rest Area", "Spaceship Bathroom","Main Lobby", "Central Corridor"] %}
+<a href="{{ url_for('help') }}">
+    <button style="margin-left: 800;margin-right: 38px type="button">Help</button>
+</a>
+<br>
+<br>
+<br>
+<br>
+<p>Your current accumulated score is: {{ score }}</p>
 <h1> {{ room.name }} </h1>
 <pre>
 {{ room.description }}
@@ -29,6 +36,13 @@
 
 <!-- Central Corridor room -->
 {% elif room.name == "Laser Weapon Armory" %}
+<a href="{{ url_for('help') }}">
+    <button style="margin-left: 800;margin-right: 38px type=" button">Help</button>
+</a>
+<br>
+<br>
+<br>
+<br>
 <p>You earned +2 points!</p>
 <p>Your new score is: {{ score }}</p>
 <h1> {{ room.name }} </h1>
@@ -56,6 +70,13 @@
 
 <!-- Anyother room -->
 {% else %}
+<a href="{{ url_for('help') }}">
+    <button style="margin-left: 800;margin-right: 38px type=" button">Help</button>
+</a>
+<br>
+<br>
+<br>
+<br>
 <p>You earned +2 points!</p>
 <p>Your new score is: {{ score }}</p>
 <h1> {{ room.name }} </h1>

@@ -4,9 +4,10 @@ from random import randint
 
 class Room(object):
 
-    def __init__(self, name, description):
+    def __init__(self, name, description, helpsystem):
         self.name = name
         self.description = description
+        self.helpsystem = helpsystem
         self.paths = {}
 
     def go(self, direction):
@@ -14,6 +15,30 @@ class Room(object):
 
     def add_paths(self, paths):
         self.paths.update(paths)
+Rest_Area = Room("Rest Area",
+"""
+You are in your spaceship sleeping and waiting to get back home after saving 
+a struggling planet that was in the hands of evil invaders. Suddenly, you hear
+a loud sound as if someone had fired a gun laser somewhere within the spaceship. 
+You wake up, and carefully start investigating around the room.
+
+What direction do you want to go?
+""", "Testing help system")
+
+Spaceship_Bathroom = Room("Spaceship Bathroom",
+                          """
+You accessed your bathroom, there is nothing specially here
+Which way do you want to go now?
+""", None)
+
+Main_Lobby = Room("Main Lobby",
+"""
+You are at the spaceship main lobby, and something feels suspicious, is quite,
+too quite indeed. Suddenly, you hear another blast and this time is much louder,
+quickly you start to investigate and try to find out where is coming from.
+
+Which way do you want to go now?
+""", None)
 
 
 Central_Corridor = Room("Central Corridor",
@@ -34,7 +59,7 @@ Type in the word/pharse:
 1. shoot!
 2. dodge!
 3. tell a joke
-""")
+""", None)
 
 Shoot_Death = Room("death",
 """
@@ -46,7 +71,7 @@ This completely ruins his brand new costume his mother
 bought him, which makes him fly into an insane rage
 and blast you repeatedly in the face until you are
 dead.  Then he eats you.
-""")
+""", None)
 
 Dodge_Death = Room("death", 
 """
@@ -56,7 +81,7 @@ past your head.  In the middle of your artful dodge
 your foot slips and you bang your head on the metal
 wall and pass out.  You wake up shortly after only to
 die as the Gothon stomps on your head and eats you.
-""")
+""", None)
 
 Laser_Weapon_Armory = Room("Laser Weapon Armory",
 """
@@ -73,7 +98,7 @@ stand up and run to the far side of the room and find the neutron bomb
 in its container.  There's a keypad lock on the box and you need the
 code to get the bomb out.  If you get the code wrong 10 times then the
 lock closes forever and you can't get the bomb.  The code is 3 digits.
-""")
+""", None)
 
 Exceedtries_Death = Room("Bomb Death",
 """
@@ -81,7 +106,7 @@ The lock buzzes one last time and then you hear a
 sickening melting sound as the mechanism is fused
 together.  You decide to sit there, and finally the
 Gothons blow up the ship from their ship and you die.
-""")
+""", None)
 
 The_Bridge = Room("The Bridge",
 """
@@ -99,7 +124,7 @@ What would you like to do?
 
 1. throw the bomb
 2. slowly place the bomb
-""")
+""", None)
 
 Escape_Pod = Room("Escape Pod",
 """
@@ -118,7 +143,7 @@ them could be damaged but you don't have time to look.  There's 5 pods,
 which one do you take?
 
 Input the number of your chosen pod (1-5):
-""")
+""", None)
 
 Bridge_Death = Room('Bridge Death',
 """
@@ -128,8 +153,7 @@ Gothon shoots you right in the back killing you.  As
 you die you see another Gothon frantically try to
 disarm the bomb. You die knowing they will probably
 blow up when it goes off.
-"""
-)
+""", None)
 
 The_End_Winner = Room("The End Winner",
 """
@@ -137,7 +161,7 @@ You jump into pod 2 and hit the eject button.  The pod easily slides out
 into space heading to the planet below.  As it flies to the planet, you
 look back and see your ship implode then explode like a bright star,
 taking out the Gothon ship at the same time.  You won!
-""")
+""", None)
 
 
 The_End_Loser = Room("The End Loser",
@@ -145,8 +169,7 @@ The_End_Loser = Room("The End Loser",
 You jump into a random pod and hit the eject button.  The pod escapes
 out into the void of space, then implodes as the hull ruptures, crushing
 your body into jam jelly.
-"""
-)
+""", None)
 
 
 # Random Death
@@ -158,8 +181,23 @@ quips = [
     "You're worse than your Dad's jokes."
 
 ]
-Generic_Death = Room("death", quips[randint(0, len(quips)-1)])
+Generic_Death = Room("death", quips[randint(0, len(quips)-1)], None)
 
+# ----------------------------------------------------------------------
+# Starting Point
+Rest_Area.add_paths({
+    'east': Main_Lobby,
+    'south': Spaceship_Bathroom
+})
+
+Spaceship_Bathroom.add_paths({
+    'north': Rest_Area
+})
+
+Main_Lobby.add_paths({
+    'east': Central_Corridor,
+    'west': Rest_Area
+})
 
 Central_Corridor.add_paths({
     'shoot!': Shoot_Death,
@@ -182,12 +220,17 @@ Escape_Pod.add_paths({
     'end': The_End_Loser
 })
 
-START = 'central_corridor'
+START = 'Intro'
 GENERIC_DEATH = 'death'
 
 # I built this diccionary out of the consequences of not having
 # global variables for load_room() and name_room()
-scences = {'central_corridor': Central_Corridor,
+scences = { 'Intro': Rest_Area,
+            'south': Spaceship_Bathroom,
+            'north': Rest_Area,
+            'east': Main_Lobby,
+            'west': Rest_Area,
+            'central_corridor': Central_Corridor,
             'shoot!': Shoot_Death,
             'dodge!': Dodge_Death,
             'laser_weapon_armory': Laser_Weapon_Armory,
