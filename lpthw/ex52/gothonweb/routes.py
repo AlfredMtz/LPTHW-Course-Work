@@ -10,8 +10,13 @@ import pdb
 
 @app.route("/")
 def index():
+    return redirect(url_for("home"))
+
+
+@app.route("/game1")
+def game1():
     # this is used to "setup" the session with starting values
-    session['room_name'] = planisphere.START
+    session['room_name'] = planisphere.START_GAME1
     session['count'] = 0
 
     # if logged user
@@ -20,8 +25,23 @@ def index():
     # if playing as a guess
     else:
         session['score'] = 0
-
     return redirect(url_for("game"))
+
+
+@app.route("/game2")
+def game2():
+    # this is used to "setup" the session with starting values
+    session['room_name'] = planisphere.START_GAME2
+    session['count'] = 0
+    #pdb.set_trace()
+    # if logged user
+    if current_user.is_authenticated:
+        session['score'] = current_user.score
+    # if playing as a guess
+    else:
+        session['score'] = 0
+    return redirect(url_for("game"))
+
 
 @app.route("/game", methods=['GET', 'POST'])
 def game():

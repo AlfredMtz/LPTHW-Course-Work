@@ -40,11 +40,16 @@ def test_index():
     assert b'end', rv.data
 
 
+def test_helpsystem():
+    rv = web.get('/help')
 
-
-
-
-
+    assert b"You can go either east or south"
+    assert b"You can go north"
+    assert b"You can go east and west"
+    assert b"You can eihter shoot!, dodge! or tell a joke"
+    assert b"The three digit code is an easy tree sequence numbers"
+    assert b"You can either throw the bomb or slowly place the bomb"
+    assert b"Think about a peace sign"
 
 
 

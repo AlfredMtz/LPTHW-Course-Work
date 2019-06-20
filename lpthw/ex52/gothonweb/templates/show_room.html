@@ -17,7 +17,7 @@
 <!-- Central Corridor room -->
 {% elif room.name in ["Rest Area", "Spaceship Bathroom","Main Lobby", "Central Corridor"] %}
 <a href="{{ url_for('help') }}">
-    <button style="margin-left: 800;margin-right: 38px type="button">Help</button>
+    <button style="margin-left: 800;margin-right: 38px" type="button">Help</button>
 </a>
 <br>
 <br>
@@ -37,7 +37,7 @@
 <!-- Central Corridor room -->
 {% elif room.name == "Laser Weapon Armory" %}
 <a href="{{ url_for('help') }}">
-    <button style="margin-left: 800;margin-right: 38px type=" button">Help</button>
+    <button style="margin-left: 800;margin-right: 38px" type=" button">Help</button>
 </a>
 <br>
 <br>
@@ -68,10 +68,20 @@
 
 <p><a href="/">Click here to play again!</a></p>
 
+
+<!-- For another game set up-->
+{% elif room.name == "Another Game Sample" %}
+<p>Your accumulated score is: {{ score }}</p>
+<h1> {{ room.name }} </h1>
+<pre>
+{{ room.description }}
+</pre>
+
+
 <!-- Anyother room -->
 {% else %}
 <a href="{{ url_for('help') }}">
-    <button style="margin-left: 800;margin-right: 38px type=" button">Help</button>
+    <button style="margin-left: 800;margin-right: 38px" type=" button">Help</button>
 </a>
 <br>
 <br>

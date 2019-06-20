@@ -15,6 +15,11 @@ class Room(object):
 
     def add_paths(self, paths):
         self.paths.update(paths)
+
+
+
+
+# GAME1    [Gothons From Planet Percal #25 Game] ------------------------------
 Rest_Area = Room("Rest Area",
 """
 You are in your spaceship sleeping and waiting to get back home after saving 
@@ -23,13 +28,13 @@ a loud sound as if someone had fired a gun laser somewhere within the spaceship.
 You wake up, and carefully start investigating around the room.
 
 What direction do you want to go?
-""", "Testing help system")
+""", "You can go either east or south")
 
 Spaceship_Bathroom = Room("Spaceship Bathroom",
                           """
 You accessed your bathroom, there is nothing specially here
 Which way do you want to go now?
-""", None)
+""", "You can go north")
 
 Main_Lobby = Room("Main Lobby",
 """
@@ -38,7 +43,7 @@ too quite indeed. Suddenly, you hear another blast and this time is much louder,
 quickly you start to investigate and try to find out where is coming from.
 
 Which way do you want to go now?
-""", None)
+""", "You can either east or west")
 
 
 Central_Corridor = Room("Central Corridor",
@@ -55,11 +60,8 @@ the Armory and about to pull a weapon to blast you.
 
 What would you like to do?
 Type in the word/pharse:
+""", "You can eihter shoot!, dodge! or tell a joke")
 
-1. shoot!
-2. dodge!
-3. tell a joke
-""", None)
 
 Shoot_Death = Room("death",
 """
@@ -98,7 +100,7 @@ stand up and run to the far side of the room and find the neutron bomb
 in its container.  There's a keypad lock on the box and you need the
 code to get the bomb out.  If you get the code wrong 10 times then the
 lock closes forever and you can't get the bomb.  The code is 3 digits.
-""", None)
+""", "The three digit code is an easy tree sequence number")
 
 Exceedtries_Death = Room("Bomb Death",
 """
@@ -121,10 +123,7 @@ pulled their weapons out yet, as they see the active bomb under your arm
 and don't want to set it off.
 
 What would you like to do?
-
-1. throw the bomb
-2. slowly place the bomb
-""", None)
+""", "You can either throw the bomb or slowly place the bomb")
 
 Escape_Pod = Room("Escape Pod",
 """
@@ -143,7 +142,7 @@ them could be damaged but you don't have time to look.  There's 5 pods,
 which one do you take?
 
 Input the number of your chosen pod (1-5):
-""", None)
+""", "Think about a peace sign")
 
 Bridge_Death = Room('Bridge Death',
 """
@@ -172,19 +171,16 @@ your body into jam jelly.
 """, None)
 
 
-# Random Death
 quips = [
     "You died.  You kinda suck at this.",
     "Your Mom would be proud...if she were smarter.",
     "Such a luser.",
     "I have a small puppy that's better at this.",
     "You're worse than your Dad's jokes."
-
 ]
 Generic_Death = Room("death", quips[randint(0, len(quips)-1)], None)
 
-# ----------------------------------------------------------------------
-# Starting Point
+
 Rest_Area.add_paths({
     'east': Main_Lobby,
     'south': Spaceship_Bathroom
@@ -220,40 +216,61 @@ Escape_Pod.add_paths({
     'end': The_End_Loser
 })
 
-START = 'Intro'
+START_GAME1 = 'Intro'
 GENERIC_DEATH = 'death'
-
-# I built this diccionary out of the consequences of not having
-# global variables for load_room() and name_room()
-scences = { 'Intro': Rest_Area,
-            'south': Spaceship_Bathroom,
-            'north': Rest_Area,
-            'east': Main_Lobby,
-            'west': Rest_Area,
-            'central_corridor': Central_Corridor,
-            'shoot!': Shoot_Death,
-            'dodge!': Dodge_Death,
-            'laser_weapon_armory': Laser_Weapon_Armory,
-            '*': Exceedtries_Death,
-            'the_bridge': The_Bridge,
-            'bridge_death': Bridge_Death,
-            'escape_pod': Escape_Pod,
-            'the_end_winner': The_End_Winner,
-            'end': The_End_Loser,
-            'death': Generic_Death
-            }
 right_choices = ['tell a joke', '123', 'slowly place the bomb', '2']
 
+
+
+
+
+
+# GAME2 [A second game example] --------------------------------------------------------
+Another_Game = Room("Another Game Sample",
+                 """
+THIS IS A SAMPLE FOR ANOTHER GAME, TO LET PEOPLE CHOOSE A GAME THEY WANT TO PLAY
+""", "You can go either east or south")
+
+START_GAME2 = 'Start'
+
+
+
+
+
+# GAMES' MAP -------------------------------------------------------------------
+# Mapping for games
+scences = {'Intro': Rest_Area,
+           'Start': Another_Game,
+           'south': Spaceship_Bathroom,
+           'north': Rest_Area,
+           'east': Main_Lobby,
+           'west': Rest_Area,
+           'central_corridor': Central_Corridor,
+           'shoot!': Shoot_Death,
+           'dodge!': Dodge_Death,
+           'laser_weapon_armory': Laser_Weapon_Armory,
+           '*': Exceedtries_Death,
+           'the_bridge': The_Bridge,
+           'bridge_death': Bridge_Death,
+           'escape_pod': Escape_Pod,
+           'the_end_winner': The_End_Winner,
+           'end': The_End_Loser,
+           'death': Generic_Death
+           }
+
+
+
+
+# GAME FUNCTIONS ---------------------------------------------------------------
+# Gets key value
 def load_room(name):
     val = scences.get(name)
     return val
 
-# returns specific scenes key if given room/parameter equals to a scenes' key value
+
+# returns specific scenes key if given room/parameter 
+# equals to a scenes' key value
 def name_room(room):
     for key, value in scences.items():
         if value == room:
             return key
-
-
-#room = load_room(START)
-#print(Generic_Death.description)
