@@ -56,7 +56,6 @@ def game():
     if request.method == "GET":
         if room_name:
             room = planisphere.load_room(room_name)
-            #pdb.set_trace()
             # random death message
             g_death = planisphere.load_room(planisphere.GENERIC_DEATH)
             return render_template("show_room.html", room=room, n_count=count, score=score, 
