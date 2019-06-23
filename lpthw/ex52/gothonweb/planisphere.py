@@ -28,13 +28,13 @@ a loud sound as if someone had fired a gun laser somewhere within the spaceship.
 You wake up, and carefully start investigating around the room.
 
 What direction do you want to go?
-""", "You can go either east or south")
+""", "You can go either right or down")
 
 Spaceship_Bathroom = Room("Spaceship Bathroom",
                           """
 You accessed your bathroom, there is nothing specially here
 Which way do you want to go now?
-""", "You can go north")
+""", "You can go up")
 
 Main_Lobby = Room("Main Lobby",
 """
@@ -43,7 +43,7 @@ too quite indeed. Suddenly, you hear another blast and this time is much louder,
 quickly you start to investigate and try to find out where is coming from.
 
 Which way do you want to go now?
-""", "You can either east or west")
+""", "You can either right or left")
 
 
 Central_Corridor = Room("Central Corridor",
@@ -60,7 +60,7 @@ the Armory and about to pull a weapon to blast you.
 
 What would you like to do?
 Type in the word/pharse:
-""", "You can eihter shoot!, dodge! or tell a joke")
+""", "You can eihter shoot, dodge or tell a joke")
 
 
 Shoot_Death = Room("death",
@@ -182,22 +182,22 @@ Generic_Death = Room("death", quips[randint(0, len(quips)-1)], None)
 
 
 Rest_Area.add_paths({
-    'east': Main_Lobby,
-    'south': Spaceship_Bathroom
+    'right': Main_Lobby,
+    'down': Spaceship_Bathroom
 })
 
 Spaceship_Bathroom.add_paths({
-    'north': Rest_Area
+    'up': Rest_Area
 })
 
 Main_Lobby.add_paths({
-    'east': Central_Corridor,
-    'west': Rest_Area
+    'right': Central_Corridor,
+    'left': Rest_Area
 })
 
 Central_Corridor.add_paths({
-    'shoot!': Shoot_Death,
-    'dodge!': Dodge_Death,
+    'shoot': Shoot_Death,
+    'dodge': Dodge_Death,
     'tell a joke': Laser_Weapon_Armory
 })
 
@@ -216,7 +216,7 @@ Escape_Pod.add_paths({
     'end': The_End_Loser
 })
 
-START_GAME1 = 'Intro'
+START_GAME1 = 'game1_start'
 GENERIC_DEATH = 'death'
 right_choices = ['tell a joke', '123', 'slowly place the bomb', '2']
 
@@ -231,7 +231,7 @@ Another_Game = Room("Another Game Sample",
 THIS IS A SAMPLE FOR ANOTHER GAME, TO LET PEOPLE CHOOSE A GAME THEY WANT TO PLAY
 """, "You can go either east or south")
 
-START_GAME2 = 'Start'
+START_GAME2 = 'game2_start'
 
 
 
@@ -239,15 +239,14 @@ START_GAME2 = 'Start'
 
 # GAMES' MAP -------------------------------------------------------------------
 # Mapping for games
-scences = {'Intro': Rest_Area,
-           'Start': Another_Game,
-           'south': Spaceship_Bathroom,
-           'north': Rest_Area,
-           'east': Main_Lobby,
-           'west': Rest_Area,
+scences = {'game1_start': Rest_Area,
+           'game2_start': Another_Game,
+           'main_lobby': Main_Lobby,
+           'spaceship_bathroom': Spaceship_Bathroom,
+           'rest_area': Rest_Area,
            'central_corridor': Central_Corridor,
-           'shoot!': Shoot_Death,
-           'dodge!': Dodge_Death,
+           'shoot': Shoot_Death,
+           'dodge': Dodge_Death,
            'laser_weapon_armory': Laser_Weapon_Armory,
            '*': Exceedtries_Death,
            'the_bridge': The_Bridge,
@@ -257,7 +256,6 @@ scences = {'Intro': Rest_Area,
            'end': The_End_Loser,
            'death': Generic_Death
            }
-
 
 
 
