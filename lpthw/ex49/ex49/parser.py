@@ -1,5 +1,5 @@
-#import lexicon
-
+import lexicon
+import pdb
 
 # Parser Error Exception class
 class ParserError(Exception):
@@ -13,7 +13,7 @@ class Sentence(object):
         self.verb = verb[1]
         self.object = obj[1]
 
-#1. returns what type of word a the list have
+#1 What type of word is the first in the list
 def peek(word_list):
     if word_list:
         word = word_list[0]
@@ -22,15 +22,16 @@ def peek(word_list):
     else:
         return None
         
-#2. What kind of sentence are we dealing with? it is a direction
-# a noun, a verb? What is it?
+#2. I expect the first word in the list to be a 'noun' 'verb' 'etc..'
+# if it is return the word tuple, if is not, then return None.
 def match(word_list, expecting):
     # for each tuple in list
     if word_list:
-        # save the tuple in position [0] to 'word'
+        # pop(i) --> remores item at given position in list and returns it
         word = word_list.pop(0)
-        # if the type of word is equals to expected
+        # type of word == to expected
         if word[0] == expecting:
+            #pdb.set_trace()
             return word
         else:
             return None
@@ -39,22 +40,19 @@ def match(word_list, expecting):
 
 #3. Skip words that aren't usefull to the sentence
 def skip(word_list, word_type):
-
+    # is the first word in the list == word_type
     while peek(word_list) == word_type:
+        # If it is, poped it out from the list and check if its == word_type.
+        # if it is return the word(won't show thoguh) because there is not a
+        # return statement inside of this loop or function, so just keep running
+        # the while loop and updating the word_list until it breaks and you
+        # finish with an updated list.
         match(word_list, word_type)
-        # The while loop is not returning anything, match()
-        # returns a value, but the while-loop keeps running
-        # until finally breaks and returns None. So the return
-        # values of match are not being save or return anywhere.
-        # The only thing that returns is the None value when
-        # the loop breaks. This is how its call skiping this
-        # words and finally returning None
-
+    
 def parse_verb(word_list):
     # breake the loop and run next block of code once
     # a word in not a 'stop' word
     skip(word_list, 'stop')
-
     # if the next word in the list is verb
     if peek(word_list) == 'verb':
         # return (type, word)
@@ -91,7 +89,18 @@ def parse_sentence(word_list):
     obj = parse_object(word_list)
 
     return Sentence(subj, verb, obj)
-'''
-word_list = lexicon.scan('in the north')
-parse_verb(word_list)
-'''
+
+
+word_list = lexicon.scan("go to the south")
+# While first word in the list is an error.
+# Go ahead and get the word list and word type, and
+# return the word tuple.
+# else ??
+# pk = peek(word_list)
+# mt = match(word_list, 'error')
+# skip(word_list, 'stop')
+# print(word_list)
+# print(pk)
+# print(mt)
+# skip(word_list, 'stop')
+print(parse_sentence(word_list))

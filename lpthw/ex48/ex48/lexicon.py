@@ -1,3 +1,5 @@
+import pdb
+
 '''
 The scan() fucntion should take a string sentence,
 break it down into words and return a list of tuples
@@ -31,19 +33,23 @@ lexicon_dict = {
 }
 
 def scan(words):
-    # Change to lower case
+    # Change to lower case / Why? Because it makes it able for the user to pass lower or
+    # capitalize letters
     words = words.lower()
-    # Splits sentence into list of words
+    # Splits sentence into list of words, now that any words in capital letters have been
+    # transform into lowercase letters.
     splitted_words = words.split()
-    
+    #pdb.set_trace()
+
     pairs_list = []
+
     # for each word in the list of words.
     for word in splitted_words:
         # if word is in the lexicon_diccionary keys
         if word in lexicon_dict.keys():
             pairs = ((lexicon_dict.get(word), word))
             pairs_list.append(pairs)
-    
+            pdb.set_trace()
         # else if the word is not in the diccionary keys
         elif word not in lexicon_dict.keys():
             # Try to make a number
@@ -56,7 +62,7 @@ def scan(words):
             else:
                 pairs = (('number', num))
                 pairs_list.append(pairs)
-        # Otherwise is an error
+        # Otherwise is an error 
         else:
             pass
 
@@ -69,4 +75,4 @@ def convert_number(s):
     except ValueError:
         return None
 
-#scan('123 south east asldfjsdlf')      
+print(scan('123 south east asldfjsdlf'))
