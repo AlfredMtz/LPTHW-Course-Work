@@ -12,6 +12,9 @@ class Sentence(object):
         self.subject = subject[1]
         self.verb = verb[1]
         self.object = obj[1]
+    
+    def __str__(self):
+        return f"{self.subject} {self.verb} {self.object}"
 
 #1 What type of word is the first in the list
 def peek(word_list):
@@ -64,7 +67,9 @@ def parse_verb(word_list):
 def parse_object(word_list):
     skip(word_list, 'stop')
     next_word = peek(word_list)
-
+    # This as added by me, not in the book
+    # if not next_word:
+    #      return ('noun', 'them')
     if next_word == 'noun':
         return match(word_list, 'noun')
     elif next_word == 'direction':
@@ -84,14 +89,17 @@ def parse_subject(word_list):
         raise ParserError("Expected a verb next.")
     
 def parse_sentence(word_list):
-    subj = parse_subject(word_list)
-    verb = parse_verb(word_list)
-    obj = parse_object(word_list)
+    if word_list[0][0] == 'number':
+        return word_list[0][1]
+    else:
+        subj = parse_subject(word_list)
+        verb = parse_verb(word_list)
+        obj = parse_object(word_list)
 
-    return Sentence(subj, verb, obj)
+        return Sentence(subj, verb, obj)
 
 
-#word_list = lexicon.scan("go to the south")
+# word_list = lexicon.scan("go right")
 # While first word in the list is an error.
 # Go ahead and get the word list and word type, and
 # return the word tuple.
@@ -103,4 +111,6 @@ def parse_sentence(word_list):
 # print(pk)
 # print(mt)
 # skip(word_list, 'stop')
-#print(parse_sentence(word_list))
+# print(word_list)
+# print(parse_sentence(word_list))
+

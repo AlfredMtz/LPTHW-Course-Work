@@ -33,7 +33,7 @@ def game2():
     # this is used to "setup" the session with starting values
     session['room_name'] = planisphere.START_GAME2
     session['count'] = 0
-    #pdb.set_trace()
+    # pdb.set_trace()
     # if logged user
     if current_user.is_authenticated:
         session['score'] = current_user.score
@@ -51,14 +51,14 @@ def game():
     count = session.get('count')
     # score game system for users, starts at 0
     score = session.get('score')
-    pdb.set_trace()
+    # pdb.set_trace()
 
     if request.method == "GET":
         if room_name:
             room = planisphere.load_room(room_name)
             # random death message
             g_death = planisphere.load_room(planisphere.GENERIC_DEATH)
-            pdb.set_trace()
+            # pdb.set_trace()
             return render_template("show_room.html", room=room, n_count=count, score=score, 
                                     g_death=g_death, title='Gothons From Planet Percal #25')
         else:
@@ -67,11 +67,10 @@ def game():
 
     else:
         # request inputed data in client's side web page.
-        # word_list = lexicon.scan(request.form.get('action'))
-        # action = parser.parse_sentence(word_list)
-        # pdb.set_trace()
-        action = request.form.get('action')
-        pdb.set_trace()
+        word_list = lexicon.scan(request.form.get('action'))
+        action = parser.parse_sentence(word_list).__str__()
+        #action = request.form.get('action')
+        #pdb.set_trace()
         # if logged user
         if action in planisphere.right_choices and current_user.is_authenticated:
             current_user.score = score + 2
@@ -93,7 +92,7 @@ def game():
             room = planisphere.load_room(room_name)
             # Not from scences, but rooms' paths
             next_room = room.go(action)
-            pdb.set_trace()
+            # pdb.set_trace()
             while room_name == 'laser_weapon_armory' and action != '123':
                 if count < 3:
                     session['count'] += 1
@@ -115,8 +114,7 @@ def game():
                     session['room_name'] = planisphere.name_room(room)
             else:
                 session['room_name'] = planisphere.name_room(next_room)
-            #pdb.set_trace()
-        pdb.set_trace()
+        # pdb.set_trace()
         # Back to /game url function
         return redirect(url_for("game"))
 

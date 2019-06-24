@@ -180,45 +180,46 @@ quips = [
 ]
 Generic_Death = Room("death", quips[randint(0, len(quips)-1)], None)
 
+# Maybe add the word 'go'
 
 Rest_Area.add_paths({
-    'right': Main_Lobby,
-    'down': Spaceship_Bathroom
+    'player go right': Main_Lobby,
+    'player go down': Spaceship_Bathroom
 })
 
 Spaceship_Bathroom.add_paths({
-    'up': Rest_Area
+    'player go up': Rest_Area
 })
 
 Main_Lobby.add_paths({
-    'right': Central_Corridor,
-    'left': Rest_Area
+    'player go right': Central_Corridor,
+    'player go left': Rest_Area
 })
-
+# delete 'a' and now 'tell joke' for parser
 Central_Corridor.add_paths({
-    'shoot': Shoot_Death,
-    'dodge': Dodge_Death,
-    'tell a joke': Laser_Weapon_Armory
+    'player shoot them': Shoot_Death,
+    'player dodge them': Dodge_Death,
+    'player tell joke': Laser_Weapon_Armory
 })
-
+# Maybe build into a number instead of a string
 Laser_Weapon_Armory.add_paths({
-  '123': The_Bridge,
+  '123' : The_Bridge,
   '*': Exceedtries_Death
 })
-
+# Change to 'throw bomb' and 'place bomb'(maybe)
 The_Bridge.add_paths({
-    'throw the bomb': Bridge_Death,
-    'slowly place the bomb': Escape_Pod
+    'player throw bomb': Bridge_Death,
+    'player slowly bomb': Escape_Pod
 })
-
+# Maybe change '2' to integer
 Escape_Pod.add_paths({
-    '2': The_End_Winner,
+    '2' : The_End_Winner,
     'end': The_End_Loser
 })
 
 START_GAME1 = 'game1_start'
 GENERIC_DEATH = 'death'
-right_choices = ['tell a joke', '123', 'slowly place the bomb', '2']
+right_choices = ['player tell joke', '123', 'player slowly bomb', '2']
 
 
 
@@ -243,18 +244,17 @@ scences = {'game1_start': Rest_Area,
            'game2_start': Another_Game,
            'main_lobby': Main_Lobby,
            'spaceship_bathroom': Spaceship_Bathroom,
-           'rest_area': Rest_Area,
            'central_corridor': Central_Corridor,
-           'shoot': Shoot_Death,
-           'dodge': Dodge_Death,
+           'shoot_death': Shoot_Death,
+           'dodge_death': Dodge_Death,
            'laser_weapon_armory': Laser_Weapon_Armory,
            '*': Exceedtries_Death,
            'the_bridge': The_Bridge,
            'bridge_death': Bridge_Death,
            'escape_pod': Escape_Pod,
            'the_end_winner': The_End_Winner,
-           'end': The_End_Loser,
-           'death': Generic_Death
+           'the_end_loser': The_End_Loser,
+           'generic_death': Generic_Death
            }
 
 

@@ -10,6 +10,11 @@ lexicon_dict = {
     'left': 'direction',
     'right': 'direction',
     'back': 'direction',
+    'north': 'direction',
+    'south': 'direction',
+    'west': 'direction',
+    'east': 'direction',
+    'turn': 'verb',
     'go': 'verb',
     'run': 'verb',
     'stop': 'verb',
@@ -20,7 +25,7 @@ lexicon_dict = {
     'tell': 'verb',
     'throw': 'verb',
     'slowly': 'verb',
-    'place': 'verb',
+    'place': 'stop',
     'a': 'stop',
     'the': 'stop',
     'to': 'stop',
@@ -32,7 +37,9 @@ lexicon_dict = {
     'bomb': 'noun',
     'joke': 'noun',
     'door': 'noun',
-    'bomb': 'noun'
+    'bomb': 'noun',
+    'gothons': 'noun',
+    'them': 'noun'
 }
 
 def scan(words):
